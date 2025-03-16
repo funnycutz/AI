@@ -7,13 +7,13 @@
     <!-- favicon.ico -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
 
     <!-- iOS Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Drafto">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/web-app-manifest-192x192.png">
 
     <!-- Android Meta Tag -->
     <meta name="theme-color" content="#007BFF">
@@ -132,7 +132,7 @@
             animation: glow 2s infinite alternate;
         }
 
-                /* Install Button */
+        /* Install Button */
         #install-button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -218,11 +218,11 @@
         </div>
 
         <div class="result" id="result"></div>
-            <!-- Install Button -->
-    <button id="install-button">Install App</button>
+        <!-- Install Button -->
+        <button id="install-button">Install App</button>
     </div>  
 
-        <script>
+    <script>
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js')
