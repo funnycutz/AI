@@ -6,8 +6,8 @@ self.addEventListener("install", (event) => {
         "/wrting-tools.html",
         "/manifest.json",
         "/service-worker.js",
-        "/icons/icon-192.png",
-        "/icons/icon-512.png"
+        "/web-app-manifest-192x192.png",
+        "/web-app-manifest-512x512.png"
       ]);
     })
   );
