@@ -17,7 +17,6 @@
 
     <!-- Android Meta Tag -->
     <meta name="theme-color" content="#007BFF">
-
     <style>
         /* Global styles */
         * {
@@ -28,7 +27,7 @@
         }
 
         body {
-            background-color: #121212;
+            background-color: #121212; /* Dark background */
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -48,6 +47,7 @@
             font-weight: bold;
         }
 
+        /* Container */
         .tool-container {
             width: 90%;
             max-width: 800px;
@@ -58,6 +58,7 @@
             backdrop-filter: blur(10px);
         }
 
+        /* Input area */
         .input-area textarea {
             width: 100%;
             height: 120px;
@@ -69,9 +70,18 @@
             font-size: 1em;
             resize: none;
             box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.3);
-            color: white;
+            transition: 0.3s ease-in-out;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-image: linear-gradient(45deg, #00d4ff, #007BFF);
         }
 
+        .input-area textarea:focus {
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Option buttons */
         .option-container {
             margin-top: 20px;
             display: flex;
@@ -89,12 +99,15 @@
             font-size: 1em;
             cursor: pointer;
             transition: 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
         }
 
         .option-button:hover {
             transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.9);
         }
 
+        /* Result */
         .result {
             margin-top: 20px;
             padding: 15px;
@@ -105,10 +118,21 @@
             min-height: 50px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(5px);
-            color: black;
+            color: black; /* Texte noir */
         }
 
-        /* Install Button */
+        /* Glow animation */
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.4); }
+        }
+
+        .option-button, .input-area textarea {
+            animation: glow 2s infinite alternate;
+        }
+
+                /* Install Button */
         #install-button {
             margin-top: 20px;
             padding: 10px 20px;
@@ -120,11 +144,64 @@
             cursor: pointer;
             display: none;
         }
+
     </style>
+    <script>
+        async function getAIResponse(prompt) {
+            const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.text();
+            return data;
+        }
+
+        async function handleOptionClick(option) {
+            const inputText = document.querySelector('#input-text').value;
+            const selectedOption = option.getAttribute('data-value');
+
+            let formattedPrompt = '';
+
+            switch (selectedOption) {
+                case 'proofread':
+                    formattedPrompt = `Proofread this and only return the proofread text: ${inputText}`;
+                    break;
+                case 'professional':
+                    formattedPrompt = `Make this professional. Only return the revised text with sophisticated language: ${inputText}`;
+                    break;
+                case 'concise':
+                    formattedPrompt = `Make this concise: ${inputText}`;
+                    break;
+                case 'friendly':
+                    formattedPrompt = `Make this friendly. Only return the friendly version: ${inputText}`;
+                    break;
+                case 'list':
+                    formattedPrompt = `Convert this into a list with bullet points: ${inputText}`;
+                    break;
+                case 'summary':
+                    formattedPrompt = `Summarize this: ${inputText}`;
+                    break;
+                default:
+                    return;
+            }
+
+            try {
+                const response = await getAIResponse(formattedPrompt);
+                document.querySelector('#result').innerText = response;
+            } catch (error) {
+                document.querySelector('#result').innerText = 'Error fetching the response. Please try again later.';
+            }
+        }
+
+        function selectOption(button) {
+            handleOptionClick(button);
+        }
+    </script>
 </head>
 <body>
 
-    <h1>Drafto - Writing Tools</h1>
+    <h1>Writing Tools</h1>
 
     <div class="tool-container">
         <div class="input-area">
@@ -135,15 +212,17 @@
             <button class="option-button" data-value="proofread" onclick="selectOption(this)">Proofread</button>
             <button class="option-button" data-value="professional" onclick="selectOption(this)">Make Professional</button>
             <button class="option-button" data-value="concise" onclick="selectOption(this)">Make Concise</button>
+            <button class="option-button" data-value="friendly" onclick="selectOption(this)">Make Friendly</button>
+            <button class="option-button" data-value="list" onclick="selectOption(this)">Create List</button>
+            <button class="option-button" data-value="summary" onclick="selectOption(this)">Summarize</button>
         </div>
 
         <div class="result" id="result"></div>
+            <!-- Install Button -->
+    <button id="install-button">Install App</button>
     </div>  
 
-    <!-- Install Button -->
-    <button id="install-button">Install App</button>
-
-    <script>
+        <script>
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js')
@@ -171,6 +250,5 @@
             }
         });
     </script>
-
 </body>
 </html>
