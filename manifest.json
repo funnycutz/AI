@@ -3,7 +3,7 @@
   "short_name": "Drafto",
   "description": "A tool to enhance your writing with AI",
   "start_url": "/writing-tools.html",
-  "scope": "/",
+  "scope": "/writing-tools.html",
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#007BFF",
