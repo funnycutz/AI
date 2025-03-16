@@ -7,7 +7,7 @@ self.addEventListener("install", (event) => {
         "/service-worker.js",
         "/web-app-manifest-192x192.png",
         "/web-app-manifest-512x512.png",
-        "/apple-touch-icon.png",
+        "/apple-touch-icon.png"
       ]);
     })
   );
