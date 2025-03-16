@@ -2,8 +2,8 @@
   "name": "Drafto",
   "short_name": "Drafto",
   "description": "A tool to enhance your writing with AI",
-  "start_url": "/writing-tools.html",
-  "scope": "/writing-tools.html",
+  "start_url": "/writing-tools.html",  // URL d'origine, peut être changée en réécrivant l'URL
+  "scope": "/writing-tools.html",  // Scope étendu à toute la section AI
   "display": "standalone",
   "background_color": "#121212",
   "theme_color": "#007BFF",
