@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drafto - Writing Tools</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- iOS Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Drafto">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <!-- Android Meta Tag -->
+    <meta name="theme-color" content="#007BFF">
+
+    <style>
+        /* Global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00d4ff, #007BFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .tool-container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-area textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: #1e1e1e;
+            font-size: 1em;
+            resize: none;
+            box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.3);
+            color: white;
+        }
+
+        .option-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #007BFF, #00d4ff);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        .option-button:hover {
+            transform: scale(1.1);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            text-align: left;
+            font-size: 1.1em;
+            min-height: 50px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            color: black;
+        }
+
+        /* Install Button */
+        #install-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Drafto - Writing Tools</h1>
+
+    <div class="tool-container">
+        <div class="input-area">
+            <textarea id="input-text" placeholder="Enter your text here..."></textarea>
+        </div>
+
+        <div class="option-container">
+            <button class="option-button" data-value="proofread" onclick="selectOption(this)">Proofread</button>
+            <button class="option-button" data-value="professional" onclick="selectOption(this)">Make Professional</button>
+            <button class="option-button" data-value="concise" onclick="selectOption(this)">Make Concise</button>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>  
+
+    <!-- Install Button -->
+    <button id="install-button">Install App</button>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log("Service Worker Registered!"))
+                .catch(err => console.log("Service Worker Registration Failed:", err));
+        }
+
+        // Install PWA
+        let deferredPrompt;
+        window.addEventListener("beforeinstallprompt", (event) => {
+            event.preventDefault();
+            deferredPrompt = event;
+            document.querySelector("#install-button").style.display = "block";
+        });
+
+        document.querySelector("#install-button").addEventListener("click", () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === "accepted") {
+                        console.log("App Installed!");
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
