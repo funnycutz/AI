@@ -6,7 +6,8 @@ self.addEventListener("install", (event) => {
         "/manifest.json",  // S'assurer que manifest est mis en cache
         "/service-worker.js",
         "/web-app-manifest-192x192.png",
-        "/web-app-manifest-512x512.png"
+        "/web-app-manifest-512x512.png",
+        "/apple-touch-icon.png",
       ]);
     })
   );
